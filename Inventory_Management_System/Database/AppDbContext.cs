@@ -9,6 +9,7 @@ namespace Inventory_Management_System.Database
 
         public DbSet<Product> Products { get; set; }
         public DbSet<Category> Categories { get; set; }
+        public DbSet<Supplier> Suppliers { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -17,6 +18,7 @@ namespace Inventory_Management_System.Database
 
             modelBuilder.Entity<Product>().HasKey(p => p.Id);
             modelBuilder.Entity<Category>().HasKey(c => c.Id);
+            modelBuilder.Entity<Supplier>().HasKey(s => s.SupplierId);
 
 
             modelBuilder.Entity<Product>()
@@ -25,13 +27,19 @@ namespace Inventory_Management_System.Database
                 .HasForeignKey(p => p.CategoryId)
                 .OnDelete(DeleteBehavior.Cascade);
 
+            modelBuilder.Entity<Product>()
+                .HasOne(p => p.supplier)
+                .WithMany(s => s.Products)
+                .HasForeignKey(p => p.SupplierId)
+                .OnDelete(DeleteBehavior.SetNull);
+
 
             modelBuilder.Entity<Product>()
                 .Property(p => p.Price)
                 .HasPrecision(18, 4);
 
-            modelBuilder.Entity<Product>().HasQueryFilter(p => !p.IsDeleted);
 
+            modelBuilder.Entity<Product>().HasQueryFilter(p => !p.IsDeleted);
 
 
             modelBuilder.Entity<Category>().HasData(
@@ -39,6 +47,5 @@ namespace Inventory_Management_System.Database
                 new Category { Id = 2, Name = "Furniture" }
             );
         }
-
     }
 }

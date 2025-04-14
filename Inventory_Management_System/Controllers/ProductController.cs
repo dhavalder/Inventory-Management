@@ -34,7 +34,7 @@ namespace Inventory_Management_System.Controllers
             var product = await _productService.GetByIdAsync(id);
             if (product == null)
             {
-                _logger.LogWarning("Product with ID {ProductId} not found", id);
+                _logger.LogWarning("Product with Id {id} not found", id);
                 return NotFound();
             }
 

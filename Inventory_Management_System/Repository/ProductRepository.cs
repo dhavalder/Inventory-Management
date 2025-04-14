@@ -38,15 +38,21 @@ namespace Inventory_Management_System.Repositories
             _context.Products.Update(entity);
         }
 
-        public void DeleteAsync(int id)
+        public async Task<bool> DeleteAsync(int id)
         {
-            var entity = _context.Products.Find(id);
-            if (entity != null)
-            {
-                entity.IsDeleted = true;
-                _context.Products.Update(entity);
-            }
+            var product = await _context.Products.FirstOrDefaultAsync(p => p.Id == id);
+            if (product == null)
+                return false;
+
+
+            product.IsDeleted = true;
+            product.DeletedOnUtc = DateTime.UtcNow;
+
+            _context.Products.Update(product);
+            await _context.SaveChangesAsync();
+            return true;
         }
+
 
         public async Task SaveChangesAsync() => await _context.SaveChangesAsync();
 
@@ -55,5 +61,9 @@ namespace Inventory_Management_System.Repositories
             _context.Products.Update(product);
         }
 
+        public async Task<int> CountAsync()
+        {
+            return await _context.Products.CountAsync();
+        }
     }
 }

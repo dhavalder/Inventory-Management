@@ -37,11 +37,17 @@ public class CategoryService : ICategoryService
 
     public async Task<bool> DeleteAsync(int id)
     {
-        var category = await _context.Categories.FindAsync(id);
-        if (category == null) return false;
+        var product = await _context.Products.FirstOrDefaultAsync(p => p.Id == id);
+        if (product == null)
+            return false;
 
-        _context.Categories.Remove(category);
+
+        product.IsDeleted = true;
+        product.DeletedOnUtc = DateTime.UtcNow;
+
+        _context.Products.Update(product);
         await _context.SaveChangesAsync();
         return true;
     }
+
 }

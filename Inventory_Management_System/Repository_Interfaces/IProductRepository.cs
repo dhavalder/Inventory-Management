@@ -6,6 +6,7 @@ namespace Inventory_Management_System.Repository_Interfaces
     {
         Task<IEnumerable<Product>> GetAllWithCategoryAsync();
         Task<Product> GetByIdWithCategoryAsync(int id);
+        Task<int> CountAsync();
 
         void Update(Product product);
     }

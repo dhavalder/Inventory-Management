@@ -4,9 +4,6 @@ using Inventory_Management_System.Repositories;
 using Inventory_Management_System.Repository_Interfaces;
 using Inventory_Management_System.Services;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Diagnostics;
-using Microsoft.Extensions.DependencyInjection;
-using System.Text;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -21,10 +18,6 @@ builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 builder.Services.AddScoped<IProductRepository, ProductRepository>();
 builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
 builder.Services.AddScoped<ICategoryService, CategoryService>();
-
-
-
-
 
 
 // Register AppDbContext 
