@@ -35,13 +35,20 @@ namespace Inventory_Management_System.Controllers
         {
             if (supplier == null)
                 return BadRequest("Supplier data is required.");
+
             _context.Suppliers.Add(supplier);
             await _context.SaveChangesAsync();
-            return CreatedAtAction(nameof(Get), new { id = supplier.SupplierId }, supplier);
+
+            return CreatedAtAction(nameof(Get), new { id = supplier.SupplierId }, new
+            {
+                Message = "Supplier added successfully",
+                data = supplier
+            });
         }
 
+
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetById(int id)    
+        public async Task<IActionResult> GetById(int id)
         {
             var supplier = await _context.Suppliers.FindAsync(id);
             if (supplier == null)
@@ -65,7 +72,12 @@ namespace Inventory_Management_System.Controllers
 
             _context.Entry(supplier).State = EntityState.Modified;
             await _context.SaveChangesAsync();
-            return NoContent();
+            return Ok(new
+            {
+                Message = "Supplier updated successfully.",
+                data = supplier
+
+            });
         }
 
         [HttpDelete("{id}")]
@@ -77,7 +89,11 @@ namespace Inventory_Management_System.Controllers
 
             _context.Suppliers.Remove(supplier);
             await _context.SaveChangesAsync();
-            return NoContent();
+            return Ok(new
+            {
+                Message = "Supplier deleted successfully",
+                data = supplier
+            });
         }
     }
 }
