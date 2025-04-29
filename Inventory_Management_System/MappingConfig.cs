@@ -17,6 +17,9 @@ namespace Inventory_Management_System.MappingProfiles
 
 
             CreateMap<Product, ProductDto>();
+
+           
+
         }
     }
 }
